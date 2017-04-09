@@ -1,18 +1,15 @@
 defmodule Gameplayer do
-  @moduledoc """
-  Documentation for Gameplayer.
-  """
 
-  @doc """
-  Hello world.
+  def play_map(map) do
 
-  ## Examples
-
-      iex> Gameplayer.hello
-      :world
-
-  """
-  def hello do
-    :world
   end
+
+  def resume_map(savedGameId) do
+
+  end
+
+  defp get_map_master_data(map) do
+    Masterdata.get_gamedata(map)
+  end
+
 end
