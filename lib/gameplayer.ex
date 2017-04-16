@@ -14,7 +14,7 @@ defmodule Gameplayer do
     gamestate_mod = config[:gamestate]
 
     children = [
-      worker(gamestate_mod, [game_id, config, name: game_id])
+      worker(gamestate_mod, [game_id, config, [name: game_id]])
     ]
 
     supervise(children, strategy: :one_for_one)
