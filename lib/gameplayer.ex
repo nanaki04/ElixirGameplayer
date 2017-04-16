@@ -1,9 +1,8 @@
 defmodule Gameplayer do
   use Supervisor
 
-  def start_game(game_id, options \\ []) do
-    options = handle_options options
-    start_supervising game_id, options
+  def start_game(game_id, config \\ []) do
+    start_supervising game_id, config
   end
 
   def stop_game(gameplayer) do
@@ -11,24 +10,18 @@ defmodule Gameplayer do
     Supervisor.stop(gameplayer, :normal)
   end
 
-  def init([game_id, options]) do
-    game_state = options.game_state
+  def init([game_id, config]) do
+    gamestate_mod = config[:gamestate]
 
     children = [
-      worker(game_state, [name: game_state, game_id: game_id, options: options])
+      worker(gamestate_mod, [game_id, config, name: game_id])
     ]
 
     supervise(children, strategy: :one_for_one)
   end
 
-  defp start_supervising(game_id, options) do
-    Supervisor.start_link(__MODULE__, [game_id, options])
-  end
-
-  defp handle_options(options) do
-    Enum.into(options, %{
-      game_state: Mock.Gamestate
-    })
+  defp start_supervising(game_id, config) do
+    Supervisor.start_link(__MODULE__, [game_id, config])
   end
 
 end
